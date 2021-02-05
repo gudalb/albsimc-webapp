@@ -5,6 +5,7 @@ import Results from './Results.js';
 import Testa from './Test.js';
 import React, { useEffect, useState } from 'react';
 import { Simulate } from './simulate.js';
+import { SimulateQueue } from './simulate.js';
 
 function App() {
 
@@ -34,10 +35,16 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    Simulate(itemInput)
+    sessionStorage.setItem('results', "Simulation in progress");
+
+    SimulateQueue(itemInput)
       .then((data) => {
-        localStorage.setItem('results', data.data.result);
-        setItemInput('');
+        try {
+          sessionStorage.setItem('results', data.data.dps);
+        } catch {
+
+        }
+        //setItemInput('');
         setAlert(true);
       })
   };
@@ -49,29 +56,21 @@ function App() {
         albSimc
         </h1>
 
-      {/* <div className="column">
-        <div>
-          <textarea id="profileText" className="profile-text-field" name="message" rows="10" cols="30" />
-        </div>
-        <div className="button-container">
-          <button onClick={() => list = Simulate("test")}>Submit</button>
-        </div>
-        <p>{list}</p>
-      </div> */}
+      {/* {alert && <h2> Submit Successful</h2>} */}
+
+      <div className="profile-submit-form">
+        <form onSubmit={handleSubmit} >
+          <label>
+            <p>Simulate</p>
+            <textarea placeholder="Paste your simc output" className="profile-text-field" type="text" onChange={event => setItemInput(event.target.value)} value={itemInput} />
+          </label><br />
+          <button type="submit">Submit</button>
+        </form>
+      </div>
 
 
-
-      {alert && <h2> Submit Successful</h2>}
-      <form onSubmit={handleSubmit}>
-        <label>
-          <p>Simulate</p>
-          <textarea id="profileText" className="profile-text-field" type="text" onChange={event => setItemInput(event.target.value)} value={itemInput} />
-        </label><br />
-        <button type="submit">Submit</button>
-      </form>
-
-      <p>{res}</p>
-
+      <Results />
+      {/* 
 
       <BrowserRouter>
         <nav>
@@ -90,7 +89,7 @@ function App() {
           </Route>
         </Switch>
 
-      </BrowserRouter>
+      </BrowserRouter> */}
 
     </div>
   );
