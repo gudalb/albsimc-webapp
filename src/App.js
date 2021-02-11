@@ -40,7 +40,7 @@ function App() {
     SimulateQueue(itemInput)
       .then((data) => {
         try {
-          sessionStorage.setItem('results', data.data.dps);
+          sessionStorage.setItem('results', data.data.message);
         } catch {
 
         }

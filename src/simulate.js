@@ -2,6 +2,8 @@ import axios from "axios";
 
 
 
+const util = require('util')
+
 export async function Simulate(profile) {
     if (ValidateProfile(profile)) {
         var res = await axios.post('http://localhost:8080/simulate', { profile: profile });
@@ -14,17 +16,27 @@ export async function Simulate(profile) {
 export async function SimulateQueue(profile) {
     if (ValidateProfile(profile)) {
         const json = JSON.stringify({ UUID: uuidv4(), profile: profile, timeRequested: Date.now() });
-        var res = await axios.post('http://localhost:8080/queue', json, {
+        var res = await axios.post('http://localhost:8080/queuesim', json, {
             headers: {
-                // Overwrite Axios's automatically set Content-Type
                 'Content-Type': 'application/json'
             }
         });
+
+        console.log(util.inspect(res, false, null, true /* enable colors */))
+
         return res;
     } else {
         return "incorrect input";
     }
 };
+
+export async function GetResult(uuid) {
+    // todo http://localhost:8080/qetresult
+}
+
+export async function GetPlaceInQueue(uuid) {
+    // todo http://localhost:8080/placeinqueue
+}
 
 export async function SimulateArmory(region, realm, charname) {
     var url = "http://localhost:8080/simulate-armory?region=" + region + "&realm=" + realm + "&charName=" + charname;
