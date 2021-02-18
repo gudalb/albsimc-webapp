@@ -4,7 +4,7 @@ import { Link, BrowserRouter, Route, Switch } from 'react-router-dom';
 import Results from './Results.js';
 import Testa from './Test.js';
 import React, { useEffect, useState } from 'react';
-import { Simulate } from './simulate.js';
+import { GetAllResult, GetPlaceInQueue, GetResult, Simulate } from './simulate.js';
 import { SimulateQueue } from './simulate.js';
 
 function App() {
@@ -35,19 +35,29 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    sessionStorage.setItem('results', "Simulation in progress");
+    Simulate(itemInput);
+    // .then((data) => {
+    //   try {
+    //     sessionStorage.setItem('results', data.data.dps);
+    //   } catch {
 
-    SimulateQueue(itemInput)
-      .then((data) => {
-        try {
-          sessionStorage.setItem('results', data.data.message);
-        } catch {
-
-        }
-        //setItemInput('');
-        setAlert(true);
-      })
+    //   }
+    //   //setItemInput('');
+    //   setAlert(true);
+    // })
   };
+
+  const getPlace = (e) => {
+    GetPlaceInQueue();
+  }
+
+  const getResult = (e) => {
+    GetResult();
+  }
+
+  const getAllResult = (e) => {
+    GetAllResult();
+  }
 
   return (
     <div className="App-header">
@@ -66,6 +76,9 @@ function App() {
           </label><br />
           <button type="submit">Submit</button>
         </form>
+        <button onClick={getPlace} >get place</button>
+        <button onClick={getResult} >get result</button>
+        <button onClick={getAllResult} >get all result</button>
       </div>
 
 
